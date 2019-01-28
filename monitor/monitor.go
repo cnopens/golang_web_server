@@ -37,7 +37,7 @@ var esRequestDuration = prometheus.NewHistogramVec(
 
 var esRequestCount = prometheus.NewCounterVec(
 	prometheus.CounterOpts{
-		Name: "elasticsearch_reqeust_total",
+		Name: "es_reqeust_total",
 		Help: "Number of elasticsearch requests in total",
 	},
 	[]string{"query"},
