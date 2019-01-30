@@ -26,7 +26,7 @@ func SayHello(w http.ResponseWriter, r *http.Request) {
 	io.WriteString(w, "hello world")
 }
 
-// SearchLineInES ...
+// SearchLineByKeyword search shakespeare book by keyword, and return the top10 sorted by line id.
 func SearchLineByKeyword(urls ...string) http.HandlerFunc {
 	// lazy load elasticsearch
 	es, err := elastic.NewClient(elastic.SetURL(urls...))
