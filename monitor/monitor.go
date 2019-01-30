@@ -72,9 +72,7 @@ func ESQuery(es *elastic.Client, index string, typ string, query elastic.Query) 
 		Index(index).
 		Type(typ).
 		Query(query).
-		From(0).
-		Size(10).
-		Sort("line_id", true).
+		Size(1).
 		Do(context.Background())
 
 	duration := time.Since(start)
@@ -93,9 +91,11 @@ func ESQuery(es *elastic.Client, index string, typ string, query elastic.Query) 
 	}
 
 	var line []byte
-	line, err = searchResult.Hits.Hits[0].Source.MarshalJSON()
-	if err != nil {
-		return nil, err
+	if len(searchResult.Hits.Hits) > 0 {
+		line, err = searchResult.Hits.Hits[0].Source.MarshalJSON()
+		if err != nil {
+			return nil, err
+		}
 	}
 
 	return line, nil
