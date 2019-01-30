@@ -14,7 +14,7 @@ import (
 func main() {
 
 	http.HandleFunc("/", monitor.Monitor(SayHello))
-	http.HandleFunc("/queryES", monitor.Monitor(SearchLineInES([]string{"http://localhost:9200"}...)))
+	http.HandleFunc("/queryES", monitor.Monitor(SearchLineByKeyword("http://localhost:9200")))
 	http.HandleFunc("/sleep", monitor.Monitor(Sleep))
 	http.Handle("/metrics", promhttp.Handler())
 
@@ -27,7 +27,7 @@ func SayHello(w http.ResponseWriter, r *http.Request) {
 }
 
 // SearchLineInES ...
-func SearchLineInES(urls ...string) http.HandlerFunc {
+func SearchLineByKeyword(urls ...string) http.HandlerFunc {
 	// lazy load elasticsearch
 	es, err := elastic.NewClient(elastic.SetURL(urls...))
 	if err != nil {
@@ -48,8 +48,8 @@ func SearchLineInES(urls ...string) http.HandlerFunc {
 	*/
 
 	return func(w http.ResponseWriter, r *http.Request) {
-
-		query := elastic.NewMatchQuery("text_entry", "to be or not to be")
+		keyword := r.URL.Query().Get("keyword")
+		query := elastic.NewMatchQuery("text_entry", keyword)
 		bytes, err := monitor.ESQuery(es, "shakespeare", "doc", query)
 		if err != nil {
 			http.Error(w, "internal failure", 500)
