@@ -8,7 +8,7 @@ import (
 
 	"github.com/olivere/elastic"
 	"github.com/prometheus/client_golang/prometheus/promhttp"
-	"github.com/tingtingyang/golang_web_server/monitor"
+	"github.com/yangtinngting/golang_web_server/monitor"
 )
 
 func main() {
@@ -55,7 +55,7 @@ func SearchLineInES(urls ...string) http.HandlerFunc {
 			http.Error(w, "internal failure", 500)
 		} else {
 			w.Header().Set("Content-Type", "application/json; charset=utf-8")
-			fmt.Fprint(w, bytes)
+			fmt.Fprint(w, string(bytes))
 		}
 
 	}
