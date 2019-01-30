@@ -6,7 +6,7 @@ import (
 	"net/http"
 	"time"
 
-	"github.com/MoonighT/elastic"
+	"github.com/olivere/elastic"
 	"github.com/prometheus/client_golang/prometheus/promhttp"
 	"github.com/tingtingyang/golang_web_server/monitor"
 )
@@ -31,7 +31,8 @@ func SearchLineInES(urls ...string) http.HandlerFunc {
 	// lazy load elasticsearch
 	es, err := elastic.NewClient(elastic.SetURL(urls...))
 	if err != nil {
-		panic("failied to establish connections to elasticsearch")
+		fmt.Println(err.Error())
+		panic("failed to establish connections to elasticsearch")
 	}
 
 	/*
